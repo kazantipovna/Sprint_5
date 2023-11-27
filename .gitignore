@@ -8,6 +8,8 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.DS_Store
+.idea/.gitignore
 
 # AWS User-specific
 .idea/**/aws.xml

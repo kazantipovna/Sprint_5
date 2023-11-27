@@ -1,42 +1,41 @@
-import random
-import string
+import pytest
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
-# данные пользователя для корректных логинов
-name = 'Julia'
-email = 'Julia_Zvereva_3666@gmail.com'
-password = '1qa2ws'
-
-
-def random_name():
-    name = (f"{''.join(random.choice(string.ascii_uppercase) for i in range(1))}"
-            f"{''.join(random.choice(string.ascii_lowercase) for i in range(4))}")
-    return name
+DRIVER_PATH = './chromedriver'
 
 
-def random_email():
-    email = (f"{''.join(random.choice(string.ascii_lowercase) for i in range(4))}_"
-             f"{''.join(random.choice(string.ascii_lowercase) for i in range(6))}_"
-             f"{random.randint(1111, 9999)}@gmail.com")
-    return email
+@pytest.fixture
+def driver_register():
+    service = Service(executable_path=DRIVER_PATH)
+    options = Options()
+    options.add_argument("--window-size=1920, 1080")
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.get('https://stellarburgers.nomoreparties.site/register')
+    yield driver
+    driver.quit()
 
 
-def random_pass():
-    password = ''.join(random.sample(string.ascii_letters + string.digits, 6))
-    return password
+# @pytest.fixture
+# def driver_register():
+#     driver = webdriver.Chrome()
+#     driver.get('https://stellarburgers.nomoreparties.site/register')
+#     yield driver
+#     driver.quit()
 
 
-def random_short_pass():
-    passwords = [''.join(random.sample(string.ascii_letters + string.digits, 1)),
-                 ''.join(random.sample(string.ascii_letters + string.digits, 2)),
-                 ''.join(random.sample(string.ascii_letters + string.digits, 3)),
-                 ''.join(random.sample(string.ascii_letters + string.digits, 4)),
-                 ''.join(random.sample(string.ascii_letters + string.digits, 5))]
-    return passwords
+@pytest.fixture
+def driver():
+    driver = webdriver.Chrome()
+    driver.get('https://stellarburgers.nomoreparties.site/')
+    yield driver
+    driver.quit()
 
 
-def unformatted_emails():
-    emails = [f"{''.join(random.choice(string.ascii_lowercase) for i in range(10))}_{random.randint(1111, 9999)}",
-              f"{''.join(random.choice(string.ascii_lowercase) for i in range(10))}_{random.randint(1111, 9999)}@",
-              f"{''.join(random.choice(string.ascii_lowercase) for i in range(10))}_{random.randint(1111, 9999)}@gmail",
-              f"{''.join(random.choice(string.ascii_lowercase) for i in range(10))}_{random.randint(1111, 9999)}@gmail."]
-    return emails
+@pytest.fixture
+def driver_login():
+    driver = webdriver.Chrome()
+    driver.get('https://stellarburgers.nomoreparties.site/login')
+    yield driver
+    driver.quit()
